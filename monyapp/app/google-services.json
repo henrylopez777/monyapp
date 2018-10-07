@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "54879181198",
+    "firebase_url": "https://monyapp-74a1d.firebaseio.com",
+    "project_id": "monyapp-74a1d",
+    "storage_bucket": "monyapp-74a1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54879181198:android:2ca20b2c728faf3c",
+        "android_client_info": {
+          "package_name": "com.example.henrylopez.monyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54879181198-312ksk9gdbohaqamdchq9fbu6tq758bi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.henrylopez.monyapp",
+            "certificate_hash": "853637f1b5cef6a6e1e74b1e4db6531452bd7351"
+          }
+        },
+        {
+          "client_id": "54879181198-hj47105clouv08232otgehs6s7caf9vc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFbWdnOkRi_Cro05CAIuL_dqEcvkmbr7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54879181198-hj47105clouv08232otgehs6s7caf9vc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

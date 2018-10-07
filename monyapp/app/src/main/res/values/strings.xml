@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">monyapp</string>
+    <string name="action_settings">Configuración</string>
+
+    <!-- Strings relation with config-->
+    <string name="configuration">Configuración</string>
+</resources>
