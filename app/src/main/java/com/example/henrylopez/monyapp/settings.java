@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class settings extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Button btnCerrar;
+    TextView Correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,8 @@ public class settings extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btnCerrar=findViewById(R.id.btnCerrarSesion);
+        Correo=findViewById(R.id.tvUserEmail);
+
         btnCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,7 +32,7 @@ public class settings extends AppCompatActivity {
                 revisar_sesion();
             }
         });
-
+        asignar_datos();
     }
 
     @Override
@@ -44,6 +48,13 @@ public class settings extends AppCompatActivity {
             Intent intent=new Intent(getApplicationContext(),splashscreen.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    public void asignar_datos(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Correo.setText(user.getEmail());
         }
     }
 

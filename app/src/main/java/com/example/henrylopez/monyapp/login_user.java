@@ -120,8 +120,8 @@ public class login_user extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Creado", "createUserWithEmail:success");
-                            Toast.makeText(getApplicationContext(), "Usuario Registrado Correctamente, Inicie Sesion",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Usuario Registrado Correctamente. \n Ahora Inicie Sesion",
+                                    Toast.LENGTH_LONG).show();
                             /*if(validar()){
                                 login_user(email,password);
                             }*/
@@ -130,8 +130,8 @@ public class login_user extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("ErrCreado", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Error al registrar usuario, intente de nuevo o inicie sesión",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "1. Error al registrar usuario.\n2. Usuario Existente.\n3. Intente de nuevo o Inicie sesión\n4. REVISA TU CONEXION A INTERNET",
+                                    Toast.LENGTH_LONG).show();
                             updateUI(null);
                         }
                     }
@@ -155,8 +155,8 @@ public class login_user extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LogFil", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Favor de verificar usuario y/o contraseña. O Registrate",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "1. Favor de verificar usuario y/o contraseña. \n2. Registrate Ahora\n3. REVISA TU CONEXION A INTERNET",
+                                    Toast.LENGTH_LONG).show();
                             updateUI(null);
                         }
                     }

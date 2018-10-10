@@ -6,7 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".settings"
     android:orientation="vertical"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Usted ha iniciado como"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/tvUserEmail"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        tools:text="correodeejemplo@gmail.com.mx"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/btnCerrarSesion"
@@ -15,6 +33,7 @@
         android:background="@color/blanco"
         android:textColor="@color/colorAccent"
         android:text="Cerrar Sesión"
-        android:elevation="50dp"/>
+        android:elevation="50dp"
+        android:layout_margin="20dp"/>
 
 </LinearLayout>

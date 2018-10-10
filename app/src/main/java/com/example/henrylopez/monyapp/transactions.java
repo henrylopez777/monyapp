@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -78,7 +80,7 @@ public class transactions extends AppCompatActivity {
                 /*if(result==1){
                     guardar_datos();
                 }*/
-                actualizar_datos();
+                guardar_datos();
             }
         });
 
@@ -124,9 +126,11 @@ public class transactions extends AppCompatActivity {
         Transaction.put("Detail", etDetail.getText().toString());
         dbRef.push().setValue(Transaction);*/
         String type="",key="";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         DatabaseReference dbRef =
                 FirebaseDatabase.getInstance().getReference()
-                        .child("Movimientos");
+                        .child(String.valueOf(user.getUid()));
 
         Map<String, String> Transaction = new HashMap<>();
         if(rbSalida.isChecked()) {
@@ -144,10 +148,11 @@ public class transactions extends AppCompatActivity {
     }
 
     private void actualizar_datos(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference dbRef =
                 FirebaseDatabase.getInstance().getReference()
-                        .child("Movimientos");
-        dbRef.child("-LOCHReGyE0wDcPWLQgu");
+                        .child(user.getUid());
+        //dbRef.child("-LOCHReGyE0wDcPWLQgu");
         String type="",key="-LOCHReGyE0wDcPWLQgu";
         Map<String, String> Transaction = new HashMap<>();
         if(rbSalida.isChecked()) {

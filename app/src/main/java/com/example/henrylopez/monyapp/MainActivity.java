@@ -1,22 +1,38 @@
 package com.example.henrylopez.monyapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.example.henrylopez.monyapp.Metodos.mMovimientos;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
+    //RecyclerView
+    private RecyclerView rvMovimientos;
+    //Referencia de Base de datos
+    private DatabaseReference mDatabase;
+
     public Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
 
         //DEFINIR TOOLBAR
         toolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -75,8 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
         }
         else{
-            Toast.makeText(getApplicationContext(),"Bienvenido " +  user.getEmail(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Bienvenido " +  user.getEmail(),Toast.LENGTH_LONG).show();
         }
+        llenar_movimientos();
     }
 
     private String cambiar_dia(int dia) {
@@ -178,9 +196,98 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void llenar_movimientos(){
+
+        //CONEXION FIREBASE CONSULTA Y MOSTRAR DATOS
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Query filtro=mDatabase.child(String.valueOf(user.getUid()));
+
+        //Los siguientes filtros son para devolver un unico valor será usado a la hora de traer restaurantes
+        //Query filtro=mDatabase.child("Preferences").orderByKey().equalTo("100");
+        //Query filtro=mDatabase.child("Preferences").orderByChild("Desc").equalTo("Snacks");
+        mDatabase.keepSynced(true);
+
+
+        //Declarar RecyclerView y asignarlo a una variable
+        rvMovimientos= (RecyclerView)findViewById(R.id.rvMoviments);
+        //Habilitar que RecyclerView para que se modifiqué segun el contenido del adaptador
+        rvMovimientos.setHasFixedSize(true);
+        rvMovimientos.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        //ADAPTADOR FIREBASE PARA POSTERIORMENTE ASIGNARLO A RECYCLERVIEW
+        FirebaseRecyclerAdapter<mMovimientos,mMovimientosViewHolder> firebaseRecyclerAdapter=
+                new FirebaseRecyclerAdapter<mMovimientos, mMovimientosViewHolder>
+                        (mMovimientos.class,R.layout.movimientos_styles,mMovimientosViewHolder.class,filtro) {
+                    //mPreferences.class(Constructor), ASIGNAR LAS PREFERENCIAS DE COMO SERÁ DESPLEGADO, CLASE ASIGNADORA DE EVENTOS, BaseDatos
+                    @Override
+                    protected void populateViewHolder(mMovimientosViewHolder viewHolder, mMovimientos model, int position) {
+                       viewHolder.setType(model.getType());
+                        viewHolder.setKey(model.getKey());
+                       viewHolder.setTitle(model.getTitle());
+                       viewHolder.setDetail(model.getDetail());
+                        viewHolder.setCant(model.getCant());
+
+                        /* viewHolder.setImage(getContext().getApplicationContext(),model.getImage());
+                        viewHolder.setDesc(model.getDesc());*/
+                        //viewHolder.setOnClickListeners();
+                    }
+
+                    @Override
+                    public void onBindViewHolder(mMovimientosViewHolder viewHolder, int position) {
+                        super.onBindViewHolder(viewHolder, position);
+                        //viewHolder.setOnClickListeners();
+                    }
+                };
+        //ASIGNARTODO AL RECYCLER VIEW
+        rvMovimientos.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+    public static class mMovimientosViewHolder extends RecyclerView.ViewHolder{
+        View mView;
+        Context context;
+
+        public mMovimientosViewHolder(View itemView){
+            super(itemView);
+            mView=itemView;
+            context=itemView.getContext();
+        }
+
+        public void setType(String Type){
+            TextView type=(TextView)mView.findViewById(R.id.tvType);
+            type.setText(Type);
+            if(Type.equals("Entrada")){
+                type.setBackgroundColor(Color.rgb(97,136,51));
+            }
+            if(Type.equals("Salida")){
+                type.setBackgroundColor(Color.rgb(216,27,96));
+            }
+        }
+
+        public void setTitle(String title){
+            TextView Title=(TextView)mView.findViewById(R.id.tvTitle);
+            Title.setText(title);
+        }
+
+        public void setDetail(String Detail){
+            TextView detail=(TextView)mView.findViewById(R.id.tvDetail);
+            detail.setText(Detail);
+        }
+        //TODOS LOS SETTERS PARA EL RECYLCER
+        public void setCant(String Cant){
+            TextView cant=(TextView)mView.findViewById(R.id.tvCant);
+            cant.setText(Cant);
+        }
+
+        public void setKey(String  Key){
+            TextView key=(TextView)mView.findViewById(R.id.tvKey);
+            key.setText(Key);
+        }
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 }
