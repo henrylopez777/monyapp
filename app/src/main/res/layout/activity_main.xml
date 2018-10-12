@@ -24,9 +24,56 @@
         android:id="@+id/rvMoviments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp">
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="55dp"></android.support.v7.widget.RecyclerView>
 
-    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="0dp"
+        android:background="@color/colorPrimary"
+        fab:layout_anchor="@+id/menu_fab"
+        fab:layout_anchorGravity="right|bottom"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_attach_money_black_12dp"/>
+        <TextView
+            android:id="@+id/tvEntradas"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorGreen"
+            android:textSize="20sp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_money_off_black_12dp"/>
+        <TextView
+            android:id="@+id/tvSalidas"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+        <ImageView
+            android:id="@+id/ivSymbolType"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            />
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/menu_fab"
@@ -38,11 +85,12 @@
         fab:fab_addButtonSize="normal"
         fab:fab_labelStyle="@style/Etiquetas"
         fab:fab_labelsPosition="left">
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fbEntrada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="?attr/colorAccent"
+            fab:fab_colorNormal="@color/colorGreen"
             fab:fab_icon="@drawable/ic_attach_money_black_12dp"
             fab:fab_size="mini"
             fab:fab_title="Entrada" />

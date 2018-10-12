@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".transactions"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="20sp"
     >
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_weight="50">
+    android:layout_weight="50"
+    >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tipo de Transacción"
-        android:layout_marginBottom="7dp"/>
+        android:text="@string/txt_type_transaction"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="7sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:layout_margin="20sp"
+        >
         <RadioButton
             android:id="@+id/rbInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrada"
+            android:text="@string/rb_input_transaction"
             android:layout_weight="1"/>
         <RadioButton
             android:id="@+id/rbOutput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Salida"
+            android:text="@string/rb_output_transaction"
             android:layout_weight="1"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Título de Transacción"
+        android:text="@string/txt_title_transaction"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
         />
     <EditText
         android:id="@+id/etTitle"
@@ -52,43 +56,48 @@
         android:layout_height="wrap_content"
         android:maxLines="5"
         android:inputType="text"
-        android:hint="Ingrese el título de su transacción"/>
-
-
+        android:hint="@string/et_hint_title_transaction"
+        />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cantidad"
+        android:text="@string/txt_Cant"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginTop="20sp"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$"
-            android:textSize="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-
+            android:text="@string/symbol_currency"
+            android:textSize="20sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginStart="10sp"
             />
         <EditText
             android:id="@+id/etCant"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="100.00"
+            android:hint="@string/et_hint_cant_transaction"
             android:inputType="numberDecimal"
             />
     </LinearLayout>
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Detalle de la transacción"
+        android:text="@string/txt_detail_transaction"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginTop="20sp"
         />
     <EditText
         android:id="@+id/etDetail"
@@ -96,23 +105,29 @@
         android:layout_height="wrap_content"
         android:maxLines="5"
         android:inputType="textMultiLine"
-        android:hint="Ingrese aquí el detalle de la transacción"/>
+        android:hint="@string/et_hint_transaction"/>
 </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancelar"/>
+            android:text="@string/btn_cancelar_transaction"/>
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar"
+            android:text="@string/btn_guardar_transaction"
             android:layout_weight="1"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-</ScrollView>

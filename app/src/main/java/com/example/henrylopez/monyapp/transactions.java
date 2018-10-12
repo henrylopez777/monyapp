@@ -1,7 +1,9 @@
 package com.example.henrylopez.monyapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +32,6 @@ public class transactions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
         String selection = getIntent().getStringExtra("selection");
-        setTitle("Nueva Transacción");
 
         rbEntrada=findViewById(R.id.rbInput);
         rbSalida=findViewById(R.id.rbOutput);
@@ -45,9 +46,14 @@ public class transactions extends AppCompatActivity {
         if(selection.equals("Entrada")){
             rbEntrada.setChecked(true);
             rbSalida.setChecked(false);
+            rbSalida.setVisibility(View.INVISIBLE);
+            setTitle("Nueva Entrada");
         }else if (selection.equals("Salida")){
             rbEntrada.setChecked(false);
+            rbSalida.setVisibility(View.VISIBLE);
+            rbEntrada.setVisibility(View.INVISIBLE);
             rbSalida.setChecked(true);
+            setTitle("Nueva Salida");
         }
 
         rbEntrada.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +82,12 @@ public class transactions extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //int result=validar_campos();
-                /*if(result==1){
+                int result=validar_campos();
+                if(result==1){
                     guardar_datos();
-                }*/
-                guardar_datos();
+                    Toast.makeText(getApplicationContext(),"Datos Guardados Correctamente",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 
@@ -167,4 +174,6 @@ public class transactions extends AppCompatActivity {
         Transaction.put("Key",key);
         dbRef.child(key).setValue(Transaction);
     }
+
 }
+

@@ -1,9 +1,13 @@
 package com.example.henrylopez.monyapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,16 +17,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.example.henrylopez.monyapp.Metodos.mMovimientos;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -32,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView rvMovimientos;
     //Referencia de Base de datos
     private DatabaseReference mDatabase;
+    TextView txvEntrada, txvSalida, txvTotal;
 
     public Toolbar toolbar;
     @Override
@@ -95,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(getApplicationContext(),"Bienvenido " +  user.getEmail(),Toast.LENGTH_LONG).show();
         }
         llenar_movimientos();
+        recorrer_datos();
     }
 
     private String cambiar_dia(int dia) {
@@ -194,6 +204,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent1);
                 break;
         }
+
+    }
+    ImageView ivSymbolType;
+    public void recorrer_datos(){
+        txvEntrada=findViewById(R.id.tvEntradas);
+        txvSalida=findViewById(R.id.tvSalidas);
+        txvTotal=findViewById(R.id.tvTotal);
+        ivSymbolType=findViewById(R.id.ivSymbolType);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference myRef = database.getReference().child(String.valueOf(user.getUid()));
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String text="";
+                double entrada=0,salida=0,total=0;
+                for(DataSnapshot item_snapshot:dataSnapshot.getChildren()) {
+                    text=item_snapshot.child("Type").getValue().toString();
+                    if(text.equals("Entrada")){
+                        entrada+=Double.parseDouble(item_snapshot.child("Cant").getValue().toString());
+                    }
+                    if (text.equals("Salida")){
+                        salida+=Double.parseDouble(item_snapshot.child("Cant").getValue().toString());
+                    }
+                }
+                total=entrada-salida;
+                txvEntrada.setText(String.valueOf(entrada));
+                txvSalida.setText(String.valueOf(salida));
+                txvTotal.setText(String.valueOf(total));
+                if(total<=0){
+                    txvTotal.setTextColor(getColor(R.color.colorAccent));
+                    ivSymbolType.setImageResource(R.drawable.ic_money_off_black_12dp);
+                }else{
+                    txvTotal.setTextColor(getColor(R.color.colorGreen));
+                    ivSymbolType.setImageResource(R.drawable.ic_attach_money_black_12dp);
+                }
+                Log.i("itemxx ",entrada + " salida " + salida + " type " + text + " total " + total);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void llenar_movimientos(){
@@ -235,17 +290,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onBindViewHolder(mMovimientosViewHolder viewHolder, int position) {
                         super.onBindViewHolder(viewHolder, position);
-                        //viewHolder.setOnClickListeners();
+                        viewHolder.setOnClickListeners();
+
                     }
+
+
                 };
         //ASIGNARTODO AL RECYCLER VIEW
         rvMovimientos.setAdapter(firebaseRecyclerAdapter);
 
     }
 
-    public static class mMovimientosViewHolder extends RecyclerView.ViewHolder{
+    public static class mMovimientosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         View mView;
         Context context;
+        ImageView ivClose;
+        FirebaseUser user;
+        DatabaseReference dbRef;
+        String keys;
+        double entradas=0, salidas=0, saldoFinal=0, cant=0;
+        TextView entrada, salida, total;
+
 
         public mMovimientosViewHolder(View itemView){
             super(itemView);
@@ -273,10 +338,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TextView detail=(TextView)mView.findViewById(R.id.tvDetail);
             detail.setText(Detail);
         }
+
+
         //TODOS LOS SETTERS PARA EL RECYLCER
         public void setCant(String Cant){
             TextView cant=(TextView)mView.findViewById(R.id.tvCant);
             cant.setText(Cant);
+            TextView type=(TextView)mView.findViewById(R.id.tvType);
+            String textType= type.getText().toString();
+
+
+            Log.i("enviosz",String.valueOf(textType));
+            if(textType.equals("Entrada")){
+                entradas += Double.parseDouble(Cant);
+                Log.i("entrada",String.valueOf(entradas));
+            }
+            if(textType.equals("Salida")){
+                salidas += Double.parseDouble(Cant);
+                Log.i("salida",String.valueOf(salidas));
+            }
+        }
+        public void totales(){
+
+
         }
 
         public void setKey(String  Key){
@@ -284,7 +368,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             key.setText(Key);
         }
 
+        public void setOnClickListeners(){
+            ivClose=mView.findViewById(R.id.ivClose);
+            ivClose.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.ivClose:
+                    AlertDialog.Builder dialogo1 = new AlertDialog.Builder(context);
+                    dialogo1.setTitle("Eliminar Transacción");
+                    dialogo1.setMessage("¿Está seguro que desea eliminar esta transacción?");
+                    dialogo1.setCancelable(false);
+                    dialogo1.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+                            delete_elements();
+                        }
+                    });
+                    dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+
+                        }
+                    });
+                    dialogo1.show();
+                    break;
+            }
+        }
+
+        public void delete_elements(){
+            TextView key = mView.findViewById(R.id.tvKey);
+            keys=key.getText().toString();
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            dbRef =
+                    FirebaseDatabase.getInstance().getReference()
+                            .child(String.valueOf(user.getUid()));
+            dbRef.child(keys).removeValue();
+        }
+
     }
+
 
     @Override
     protected void onStart() {

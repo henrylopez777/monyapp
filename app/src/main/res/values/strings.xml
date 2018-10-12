@@ -9,4 +9,16 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_settings">settings</string>
+    <string name="symbol_currency">$</string>
+    <string name="txt_Cant">Cantidad</string>
+    <string name="txt_detail_transaction">Detalle de la transacción</string>
+    <string name="txt_title_transaction">Título de Transacción</string>
+    <string name="txt_type_transaction">Tipo de Transacción</string>
+    <string name="rb_input_transaction">Entrada</string>
+    <string name="rb_output_transaction">Salida</string>
+    <string name="et_hint_title_transaction">Ingrese el título de su transacción</string>
+    <string name="et_hint_cant_transaction">100.00</string>
+    <string name="et_hint_transaction">Ingrese aquí el detalle de la transacción</string>
+    <string name="btn_cancelar_transaction">Cancelar</string>
+    <string name="btn_guardar_transaction">Guardar</string>
 </resources>
